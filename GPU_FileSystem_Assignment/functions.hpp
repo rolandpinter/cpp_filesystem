@@ -14,16 +14,14 @@ namespace fs = std::__fs::filesystem;
 class explorer
 {
 private:
-    // private class member variables
     std::vector<fs::path> m_fileNames;
-    std::vector<unsigned long> m_fileSizes; // dimension = Bytes
+    std::vector<unsigned long> m_fileSizes;   // dimension = Bytes
     
     std::vector<fs::path> m_folderNames;
-    std::vector<unsigned long> m_folderSizes;
+    std::vector<unsigned long> m_folderSizes; // dimension = Bytes
     std::vector<unsigned> m_numberOfThingsInAFolder;
     
 public:
-    // public class member variables
     std::string m_givenPath;
     
     // Default constructor
@@ -35,6 +33,13 @@ public:
     explorer(std::string givenPath)
     {
         m_givenPath = givenPath;
+        
+        // Need to add manually givenPath to folderNames
+        // because recursive iteration will start FROM that folder
+        // and not WITH that folder.
+        m_folderNames.push_back(fs::path(givenPath));
+        m_folderSizes.push_back(0);
+        m_numberOfThingsInAFolder.push_back(0);
     };
     
     
@@ -43,6 +48,10 @@ public:
     void setPath(std::string givenPath)
     {
         m_givenPath = givenPath;
+        m_folderNames.push_back(fs::path(givenPath));
+        m_folderSizes.push_back(0);
+        m_numberOfThingsInAFolder.push_back(0);
+        
     }
     
 // (2) iterate the path and collect information
@@ -50,17 +59,41 @@ public:
     {
         for(auto& p: fs::recursive_directory_iterator(m_givenPath))
         {
-            // if not directory
-            if(!fs::is_directory(p.symlink_status()))
+            // if directory
+            if(fs::is_directory(p.symlink_status()))
             {
-                m_fileNames.push_back(p.path());                // save file names
-                m_fileSizes.push_back(fs::file_size(p.path())); // save file sizes
+                m_folderNames.push_back(p.path()); // save folder names
+                m_folderSizes.push_back(0);
+                m_numberOfThingsInAFolder.push_back(0);
             }
             
-            // if directory: TODO
+            // if not directory
             else
             {
-                continue;
+                m_fileNames.push_back(p.path());                // save file names
+                unsigned long sizeOfFile = fs::file_size(p.path());
+                m_fileSizes.push_back(sizeOfFile); // save file sizes
+                
+                // if it's a file, it's parent_path() will be the directory within it's contained
+                fs::path dirNameOfFile = p.path().parent_path();  // directory name of file
+                
+                // locate the directory's index in m_folderNames := indexOfFolder
+                unsigned int indexOfFolder = 0;
+                std::vector<fs::path>::iterator itr;
+                for(itr = m_folderNames.begin(); itr != m_folderNames.end(); ++itr)
+                {
+                    if(*itr == dirNameOfFile)
+                    {
+                        // we found the directory, can stop iteration
+                        break;
+                    }
+                    else
+                        indexOfFolder += 1;
+                }
+                
+                m_numberOfThingsInAFolder[indexOfFolder] += 1;
+                m_folderSizes[indexOfFolder] += sizeOfFile;
+                
             }
               
         }
@@ -73,12 +106,20 @@ public:
     }
     
     
-    // just for development phase, sanity checks
+// Functions just for development phase, sanity checks
     void printFileInfo(void)
     {
         for (int i=0; i<m_fileNames.size(); ++i)
         {
-            std::cout << m_fileSizes[i] << "\t" << m_fileNames[i] << std::endl;
+            std::cout << m_fileSizes[i] << "\t" << m_fileNames[i] <<  "\n \t" << m_fileNames[i].parent_path() <<std::endl;
+        }
+    }
+    
+    void printFolderInfo(void)
+    {
+        for(int i=0;i<m_folderNames.size();++i)
+        {
+            std::cout << m_folderNames[i] << "\n" << "# of elements: " << m_numberOfThingsInAFolder[i] << "\n" << "size: " << m_folderSizes[i] << std::endl;
         }
     }
 
