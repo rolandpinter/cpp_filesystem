@@ -99,10 +99,43 @@ public:
         }
     }
     
-// (3) determine the n biggest files
-    void biggestFiles(const unsigned int n)
+// (3) determine the path of the n biggest files
+    void biggestFiles(const int n)
     {
-        std::cout << "TODO" <<std::endl;
+        // handling bad use-case
+        if (n < 1)
+        {
+            std::cerr << "You have asked for the path of the " << n << " biggest files. A bit silly, ehh? Try again please, exiting..." <<std::endl;
+            exit(-1);
+        }
+        
+        std::vector<std::pair<unsigned long, fs::path> > pairFilesWithSizes; // make a vector of pairs, to make sort easy
+        
+        // fill the vector of pairs
+        for(unsigned int iFile=0; iFile < m_fileNames.size(); ++iFile)
+            pairFilesWithSizes.push_back(std::make_pair(m_fileSizes[iFile], m_fileNames[iFile]));
+        
+        std::sort(pairFilesWithSizes.begin(), pairFilesWithSizes.end()); // sort in ascending order
+        
+        unsigned long numberOfFiles = m_fileNames.size();
+        if(n > numberOfFiles)
+        {
+            std::cerr << "You've required to print the path of the first " << n <<" biggest files, but there are only " << m_fileNames.size() << " files under the given path, exiting..." << std::endl;
+            exit(-1);
+        }
+        
+        else
+        {
+            if (n == 1)
+                std::cout << "The required path of the biggest file is the following:" << std::endl;
+            else
+                std::cout << "The required path of the " << n << " biggest files are the followings:" << std::endl;
+            
+            for(unsigned long iBig = numberOfFiles; iBig >(numberOfFiles - n); --iBig)
+                std::cout << pairFilesWithSizes[iBig-1].second << "\t" << pairFilesWithSizes[iBig-1].first << " Bytes" << std::endl;
+        }
+        
+        
     }
     
     
