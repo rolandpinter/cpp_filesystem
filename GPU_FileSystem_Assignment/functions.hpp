@@ -187,7 +187,29 @@ public:
         
         std::cout << "The average of the folder sizes is: " << average << " Bytes." <<std::endl;
     }
-    
+
+//-------------------------- (7) Determine median file size. --------------------------//
+    void medianFileSize(void)
+    {
+        std::vector<unsigned long> fileSizesCopy = m_fileSizes; // copy by value, created a new vector! (to avoid messing with original vector)
+        
+        //std::vector<unsigned long> testingVec{1,9,6};
+        //std::vector<unsigned long> fileSizesCopy = testinVec; // copy by value, created a new vector! (to avoid messing with original vector)
+        
+        size_t n = fileSizesCopy.size() / 2;
+        std::nth_element(fileSizesCopy.begin(), fileSizesCopy.begin() + n, fileSizesCopy.end()); // sort until the half of the vector
+        unsigned long centerValue = fileSizesCopy[n];
+        
+        if(fileSizesCopy.size() % 2 == 1)
+            std::cout << "The median file size is: " <<centerValue<< " Bytes." << std::endl;
+        
+        else
+        {
+            std::nth_element(fileSizesCopy.begin(), fileSizesCopy.begin() + n-1, fileSizesCopy.end());
+            unsigned long median = 0.5*(centerValue + fileSizesCopy[n-1]);
+            std::cout << "The median file size is: " <<median<< " Bytes." << std::endl;
+        }
+    }
     
     
     

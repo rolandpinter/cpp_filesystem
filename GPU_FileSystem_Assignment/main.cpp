@@ -10,7 +10,7 @@ int main(int argc, const char * argv[])
     //foo.biggestFolders(2);
     //foo.avgFileSize();
     //foo.avgFolderSize();
-    
+    //foo.medianFileSize();
     
     
     return 0;
