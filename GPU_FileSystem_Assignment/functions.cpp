@@ -1,5 +1,25 @@
 #include "functions.hpp"
 
+int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsigned long sizeToFind)
+{
+    int index = 0;
+    bool found = false;
+    
+    std::vector<unsigned long>::iterator itr;
+    for(itr = uniqueFileSizes.begin(); itr != uniqueFileSizes.end(); ++itr)
+    {
+        if(*itr == sizeToFind)
+        {
+            found = true;
+            break;
+        }
+        ++index;
+    }
+    
+    if (found) return index;
+    else return -999;
+}
+
 //-------------------------- (1) Manually set the path of the class which should be examined. --------------------------//
     void explorer::setPath(std::string givenPath)
     {
@@ -191,15 +211,46 @@
         std::vector<unsigned long> uniqueFileSizes; // vector for unique file sizes (i.e.: each different size appears once here)
         std::vector<int> countUniqueFileSizes;      // vector for counting the occurance of the unique file sizes
         
+        std::vector<unsigned long>::iterator itr;
+        for(itr = m_fileSizes.begin(); itr != m_fileSizes.end(); ++itr)
+        {
+            int index = findIndexOfElementInVector(uniqueFileSizes, *itr);
+            if (index == -999)
+            {
+                uniqueFileSizes.push_back(*itr);
+                countUniqueFileSizes.push_back(1);
+            }
+            else
+                countUniqueFileSizes[index] += 1;
+        }
         
+        // TODO: find a nice way to visualize the result in the consol
+        std::cout<<"FileSize\tCounts"<<std::endl;
+        for(int i=0; i<uniqueFileSizes.size(); ++i)
+            std::cout << uniqueFileSizes[i] << "\t" << countUniqueFileSizes[i] << std::endl;
     }
 
-
-int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsigned long sizeToFind)
+//-------------------------- (10) Determine the distribution of folder sizes. --------------------------//
+void explorer::distributionFolderSizes(void)
 {
-    int index = 0;
+    std::vector<unsigned long> uniqueFolderSizes; // vector for unique file sizes (i.e.: each different size appears once here)
+    std::vector<int> countUniqueFolderSizes;      // vector for counting the occurance of the unique file sizes
     
-    return index;
+    std::vector<unsigned long>::iterator itr;
+    for(itr = m_folderSizes.begin(); itr != m_folderSizes.end(); ++itr)
+    {
+        int index = findIndexOfElementInVector(uniqueFolderSizes, *itr);
+        if (index == -999)
+        {
+            uniqueFolderSizes.push_back(*itr);
+            countUniqueFolderSizes.push_back(1);
+        }
+        else
+            countUniqueFolderSizes[index] += 1;
+    }
+    
+    // TODO: find a nice way to visualize the result in the consol
+    std::cout<<"FolderSize\tCounts"<<std::endl;
+    for(int i=0; i<uniqueFolderSizes.size(); ++i)
+        std::cout << uniqueFolderSizes[i] << "\t" << countUniqueFolderSizes[i] << std::endl;
 }
-
-

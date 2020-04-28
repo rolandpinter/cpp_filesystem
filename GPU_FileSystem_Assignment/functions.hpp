@@ -45,7 +45,6 @@ public:
         m_numberOfThingsInAFolder.push_back(0);
     };
     
-    
     // Class member functions
     void setPath(std::string givenPath); //Manually set the path of the class which should be examined.
     void iterateThroughGivenPath(void); //Iterate the path and collect information.
@@ -56,8 +55,7 @@ public:
     void medianFileSize(void); //Determine median file size.
     void medianFolderSize(void); //Determine median folder size.
     void distributionFileSizes(void); //Determine the distribution of file sizes.
-    
-    
+    void distributionFolderSizes(void); //Determine the distribution of folder sizes.
     
 //-------------------------- Functions just for development phase, sanity checks. --------------------------//
     void printFileInfo(void)
@@ -75,9 +73,6 @@ public:
             std::cout << m_folderNames[i] << "\n" << "# of elements: " << m_numberOfThingsInAFolder[i] << "\n" << "size: " << m_folderSizes[i] << std::endl;
         }
     }
-
-   
-    
 };
 
 #endif /* functions_hpp */
