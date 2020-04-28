@@ -1,4 +1,4 @@
-#include "functions.cpp"
+#include "functions.hpp"
 
 int main(int argc, const char * argv[])
 {
@@ -11,7 +11,7 @@ int main(int argc, const char * argv[])
     //foo.avgFileSize();
     //foo.avgFolderSize();
     //foo.medianFileSize();
-    //foo.medianFolderSize();
+    foo.medianFolderSize();
     
     
     return 0;
