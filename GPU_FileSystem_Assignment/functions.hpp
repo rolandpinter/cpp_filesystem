@@ -9,6 +9,7 @@
 #include <map>
 #include <sstream>
 #include <algorithm>
+#include <numeric>   //for std::accumulate
 namespace fs = std::__fs::filesystem;
 
 class explorer
@@ -18,7 +19,7 @@ private:
     std::vector<unsigned long> m_fileSizes;   // dimension = Bytes
     
     std::vector<fs::path> m_folderNames;
-    std::vector<unsigned long> m_folderSizes; // dimension = Bytes
+    std::vector<unsigned long> m_folderSizes; // dimension = Bytes (size of folder:= sum of size of FILES within the folder, EXCLUDING folders)
     std::vector<unsigned> m_numberOfThingsInAFolder;
     
 public:
@@ -44,7 +45,7 @@ public:
     
     
     // Class member functions
-// (1) manually set the path of the class which should be examined
+//-------------------------- (1) Manually set the path of the class which should be examined. --------------------------//
     void setPath(std::string givenPath)
     {
         m_givenPath = givenPath;
@@ -54,7 +55,7 @@ public:
         
     }
     
-// (2) iterate the path and collect information
+//-------------------------- (2) Iterate the path and collect information. --------------------------//
     void iterateThroughGivenPath(void)
     {
         for(auto& p: fs::recursive_directory_iterator(m_givenPath))
@@ -99,7 +100,7 @@ public:
         }
     }
     
-// (3) determine the path of the n biggest files
+//-------------------------- (3) Determine the path of the n biggest files. --------------------------//
     void biggestFiles(const int n)
     {
         // handling bad use-case
@@ -109,37 +110,89 @@ public:
             exit(-1);
         }
         
+        unsigned long numberOfFiles = m_fileNames.size();
+        if(n > numberOfFiles)
+        {
+            std::cerr << "You've required to print the path of the first " << n <<" biggest files, but there are only " << numberOfFiles << " files under the given path, exiting..." << std::endl;
+            exit(-1);
+        }
+        
+        // done handling bad use-cases, let's solve the problem now
         std::vector<std::pair<unsigned long, fs::path> > pairFilesWithSizes; // make a vector of pairs, to make sort easy
         
         // fill the vector of pairs
-        for(unsigned int iFile=0; iFile < m_fileNames.size(); ++iFile)
+        for(unsigned int iFile=0; iFile < numberOfFiles; ++iFile)
             pairFilesWithSizes.push_back(std::make_pair(m_fileSizes[iFile], m_fileNames[iFile]));
         
         std::sort(pairFilesWithSizes.begin(), pairFilesWithSizes.end()); // sort in ascending order
         
-        unsigned long numberOfFiles = m_fileNames.size();
-        if(n > numberOfFiles)
+        if (n == 1)
+            std::cout << "The required path of the biggest file is the following:" << std::endl;
+        else
+            std::cout << "The required path of the " << n << " biggest files are the followings:" << std::endl;
+        
+        for(unsigned long iBig = numberOfFiles; iBig >(numberOfFiles - n); --iBig)
+            std::cout << pairFilesWithSizes[iBig-1].second << "\t" << pairFilesWithSizes[iBig-1].first << " Bytes" << std::endl;
+    }
+    
+//-------------------------- (4) Determine the path of the n biggest folders. --------------------------//
+    void biggestFolders(const int n)
+    {
+        // handling bad use-case
+        if (n < 1)
         {
-            std::cerr << "You've required to print the path of the first " << n <<" biggest files, but there are only " << m_fileNames.size() << " files under the given path, exiting..." << std::endl;
+            std::cerr << "You have asked for the path of the " << n << " biggest folders. A bit silly, ehh? Try again please, exiting..." <<std::endl;
             exit(-1);
         }
         
-        else
+        unsigned long numberOfFolders = m_folderNames.size();
+        if(n > numberOfFolders)
         {
-            if (n == 1)
-                std::cout << "The required path of the biggest file is the following:" << std::endl;
-            else
-                std::cout << "The required path of the " << n << " biggest files are the followings:" << std::endl;
-            
-            for(unsigned long iBig = numberOfFiles; iBig >(numberOfFiles - n); --iBig)
-                std::cout << pairFilesWithSizes[iBig-1].second << "\t" << pairFilesWithSizes[iBig-1].first << " Bytes" << std::endl;
+            std::cerr << "You've required to print the path of the first " << n <<" biggest folders, but there are only " << numberOfFolders << " folders under the given path, exiting..." << std::endl;
+            exit(-1);
         }
         
+        // done handling bad use-cases, let's solve the problem now
+        std::vector<std::pair<unsigned long, fs::path> > pairFoldersWithSizes; // make a vector of pairs, to make sort easy
         
+        // fill the vector of pairs
+        for(unsigned int iFolder=0; iFolder < numberOfFolders; ++iFolder)
+            pairFoldersWithSizes.push_back(std::make_pair(m_folderSizes[iFolder], m_folderNames[iFolder]));
+        
+        std::sort(pairFoldersWithSizes.begin(), pairFoldersWithSizes.end()); // sort in ascending order
+        
+        if (n == 1)
+            std::cout << "The required path of the biggest folder is the following:" << std::endl;
+        else
+            std::cout << "The required path of the " << n << " biggest folders are the followings:" << std::endl;
+        
+        for(unsigned long iBig = numberOfFolders; iBig >(numberOfFolders - n); --iBig)
+            std::cout << pairFoldersWithSizes[iBig-1].second << "\t" << pairFoldersWithSizes[iBig-1].first << " Bytes" << std::endl;
+    }
+    
+//-------------------------- (5) Determine the average file size. --------------------------//
+    void avgFileSize(void)
+    {
+        auto sum = std::accumulate(m_fileSizes.cbegin(), m_fileSizes.cend(), 0.0);
+        auto average = sum / m_fileSizes.size();
+        
+        std::cout << "The average of the file sizes is: " << average << " Bytes." <<std::endl;
+    }
+    
+//-------------------------- (6) Determine the average folder size. --------------------------//
+    void avgFolderSize(void)
+    {
+        auto sum = std::accumulate(m_folderSizes.cbegin(), m_folderSizes.cend(), 0.0);
+        auto average = sum / m_folderSizes.size();
+        
+        std::cout << "The average of the folder sizes is: " << average << " Bytes." <<std::endl;
     }
     
     
-// Functions just for development phase, sanity checks
+    
+    
+    
+//-------------------------- Functions just for development phase, sanity checks. --------------------------//
     void printFileInfo(void)
     {
         for (int i=0; i<m_fileNames.size(); ++i)

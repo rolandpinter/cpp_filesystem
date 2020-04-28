@@ -6,7 +6,12 @@ int main(int argc, const char * argv[])
     foo.iterateThroughGivenPath();
     //foo.printFileInfo();
     //foo.printFolderInfo();
-    foo.biggestFiles(3);
+    //foo.biggestFiles(3);
+    //foo.biggestFolders(2);
+    //foo.avgFileSize();
+    //foo.avgFolderSize();
+    
+    
     
     return 0;
 }
