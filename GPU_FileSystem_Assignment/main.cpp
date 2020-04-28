@@ -11,6 +11,7 @@ int main(int argc, const char * argv[])
     //foo.avgFileSize();
     //foo.avgFolderSize();
     //foo.medianFileSize();
+    //foo.medianFolderSize();
     
     
     return 0;

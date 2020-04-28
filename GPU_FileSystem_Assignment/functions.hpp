@@ -211,7 +211,25 @@ public:
         }
     }
     
-    
+//-------------------------- (8) Determine median folder size. --------------------------//
+    void medianFolderSize(void)
+    {
+        std::vector<unsigned long> folderSizesCopy = m_folderSizes; // copy by value, created a new vector! (to avoid messing with original vector)
+        
+        size_t n = folderSizesCopy.size() / 2;
+        std::nth_element(folderSizesCopy.begin(), folderSizesCopy.begin() + n, folderSizesCopy.end()); // sort until the half of the vector
+        unsigned long centerValue = folderSizesCopy[n];
+        
+        if(folderSizesCopy.size() % 2 == 1)
+            std::cout << "The median folder size is: " <<centerValue<< " Bytes." << std::endl;
+        
+        else
+        {
+            std::nth_element(folderSizesCopy.begin(), folderSizesCopy.begin() + n-1, folderSizesCopy.end());
+            unsigned long median = 0.5*(centerValue + folderSizesCopy[n-1]);
+            std::cout << "The median folder size is: " <<median<< " Bytes." << std::endl;
+        }
+    }
     
     
 //-------------------------- Functions just for development phase, sanity checks. --------------------------//
