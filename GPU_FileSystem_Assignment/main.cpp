@@ -12,8 +12,9 @@ int main()
     //foo.avgFolderSize();
     //foo.medianFileSize();
     //foo.medianFolderSize();
-    //foo.distributionFileSizes();
+    foo.distributionFileSizes();
     //foo.distributionFolderSizes();
+    
     
     
     return 0;

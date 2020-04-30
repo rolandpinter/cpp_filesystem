@@ -224,10 +224,32 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
                 countUniqueFileSizes[index] += 1;
         }
         
-        // TODO: find a nice way to visualize the result in the consol
-        std::cout<<"FileSize\tCounts"<<std::endl;
+        
+        std::cout<<"File sizes [Bytes]   Counts      Histogram"<<std::endl; //22. char is C in Counts, 34. char is H in Histogram
+        
+        int positionOfC = 22;
+        int positionOfH = 34;
+        
         for(int i=0; i<uniqueFileSizes.size(); ++i)
-            std::cout << uniqueFileSizes[i] << "\t" << countUniqueFileSizes[i] << std::endl;
+        {
+            std::cout << uniqueFileSizes[i];
+            
+            //string magic to have the number perfectly aligned under Counts!
+            std::string foo = std::to_string(uniqueFileSizes[i]);
+            unsigned long lengthOfNumber = foo.size();
+            for(int j = 0; j < positionOfC - lengthOfNumber - 1; ++j) std::cout<<" ";
+            
+            std::cout <<countUniqueFileSizes[i];
+            
+            //string magic to have the histogram *s perfectly aligned under Histogram!
+            std::string fooo = std::to_string(countUniqueFileSizes[i]);
+            unsigned long lenghtOfCountsOfNumber = fooo.size();
+            for(int k = 0; k <positionOfH - positionOfC - lenghtOfCountsOfNumber;++k) std::cout<<" ";
+            
+            for(int h=0; h<countUniqueFileSizes[i];++h) std::cout<<"*";
+            std::cout<<std::endl;
+            
+        }
     }
 
 //-------------------------- (10) Determine the distribution of folder sizes. --------------------------//
@@ -249,8 +271,29 @@ void explorer::distributionFolderSizes(void)
             countUniqueFolderSizes[index] += 1;
     }
     
-    // TODO: find a nice way to visualize the result in the consol
-    std::cout<<"FolderSize\tCounts"<<std::endl;
+    std::cout<<"Folder sizes [Bytes]   Counts      Histogram"<<std::endl; //24. char is C in Counts, 36. char is H in Histogram
+    
+    int positionOfC = 24;
+    int positionOfH = 36;
+    
     for(int i=0; i<uniqueFolderSizes.size(); ++i)
-        std::cout << uniqueFolderSizes[i] << "\t" << countUniqueFolderSizes[i] << std::endl;
+    {
+        std::cout << uniqueFolderSizes[i];
+        
+        //string magic to have the number perfectly aligned under Counts!
+        std::string foo = std::to_string(uniqueFolderSizes[i]);
+        unsigned long lengthOfNumber = foo.size();
+        for(int j = 0; j < positionOfC - lengthOfNumber - 1; ++j) std::cout<<" ";
+        
+        std::cout <<countUniqueFolderSizes[i];
+        
+        //string magic to have the histogram *s perfectly aligned under Histogram!
+        std::string fooo = std::to_string(countUniqueFolderSizes[i]);
+        unsigned long lenghtOfCountsOfNumber = fooo.size();
+        for(int k = 0; k <positionOfH - positionOfC - lenghtOfCountsOfNumber;++k) std::cout<<" ";
+        
+        for(int h=0; h<countUniqueFolderSizes[i];++h) std::cout<<"*";
+        std::cout<<std::endl;
+        
+    }
 }
