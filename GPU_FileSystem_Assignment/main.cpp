@@ -1,5 +1,7 @@
 #include "functions.hpp"
 
+/// Usage: build project, run the main.o and follow the instructions
+
 int main()
 {
     std::string pathToExplore = askForPathToExplore();
@@ -31,6 +33,8 @@ int main()
         else if(command == 6) foo.medianFolderSize();
         else if(command == 7) foo.distributionFileSizes();
         else if(command == 8) foo.distributionFolderSizes();
+        else if(command == 9) foo.printFileInfo();
+        else if(command == 10) foo.printFolderInfo();
         
     }
     

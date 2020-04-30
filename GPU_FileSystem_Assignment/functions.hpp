@@ -46,7 +46,7 @@ public:
     };
     
     /// Class member functions
-    void setPath(std::string givenPath); // Manually set the path of the class which should be examined.
+    void setPath(std::string givenPath); // Manually set the path of the class which should be examined. (Not used, but works fine.)
     void iterateThroughGivenPath(void);  // Iterate the path and collect information.
     void biggestFiles(const int n);      // Determine the path of the n biggest files.
     void biggestFolders(const int n);    // Determine the path of the n biggest folders.
@@ -56,23 +56,8 @@ public:
     void medianFolderSize(void);         // Determine median folder size.
     void distributionFileSizes(void);    // Determine the distribution of file sizes.
     void distributionFolderSizes(void);  // Determine the distribution of folder sizes.
-    
-//-------------------------- Functions just for development phase, sanity checks. --------------------------//
-    void printFileInfo(void)
-    {
-        for (int i=0; i<m_fileNames.size(); ++i)
-        {
-            std::cout << m_fileSizes[i] << "\t" << m_fileNames[i] <<  "\n \t" << m_fileNames[i].parent_path() <<std::endl;
-        }
-    }
-    
-    void printFolderInfo(void)
-    {
-        for(int i=0;i<m_folderNames.size();++i)
-        {
-            std::cout << m_folderNames[i] << "\n" << "# of elements: " << m_numberOfThingsInAFolder[i] << "\n" << "size: " << m_folderSizes[i] << std::endl;
-        }
-    }
+    void printFileInfo(void);            // Print information about files: name and size.
+    void printFolderInfo(void);          // Print information about folders: name, size, number of things they contain.
 };
 
 #endif /* functions_hpp */

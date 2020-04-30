@@ -2,6 +2,7 @@
 
 int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsigned long sizeToFind)
 {
+    /// Function to find the index of a given element in a vector
     int index = 0;
     bool found = false;
     
@@ -22,6 +23,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
 
 std::string askForPathToExplore()
 {
+    /// Function to ask user for path to explore
     std::string pathToExplore;
     std::cout << "Give me a folder's path to explore or write TEST to use a pre-defined default test path: ";
     std::cin >> pathToExplore;
@@ -40,6 +42,7 @@ std::string askForPathToExplore()
 
 int askForCommand()
 {
+    /// Function to drive the main()
     int command;
     std::cout << "\nWhat would you like to do? Please type in a number from the list:" << std::endl;
     std::cout << "0: Exit this program and say goodbye." << std::endl;
@@ -51,9 +54,11 @@ int askForCommand()
     std::cout << "6: Determine the median folder size." << std::endl;
     std::cout << "7: Determine the distribution of file sizes." << std::endl;
     std::cout << "8: Determine the distribution of folder sizes." << std::endl;
+    std::cout << "9: List all the files under the given path with their sizes." << std::endl;
+    std::cout << "10: List all the folders under the given path with their size and show how many files do they contain." << std::endl;
     std::cin >> command;
     
-    if(command < 0 || command > 8)
+    if(command < 0 || command > 10)
     {
         std::cerr << "You've given a wrong number, exiting..." << std::endl;
         exit(-1);
@@ -68,6 +73,7 @@ int askForCommand()
     return command;
 }
 
+///explorer() class member function definitions
 //-------------------------- (1) Manually set the path of the class which should be examined. --------------------------//
     void explorer::setPath(std::string givenPath)
     {
@@ -345,4 +351,18 @@ void explorer::distributionFolderSizes(void)
         std::cout<<std::endl;
         
     }
+}
+
+//-------------------------- (11) Print information about files: name and size. --------------------------//
+void explorer::printFileInfo(void)
+{
+       for (int i = 0; i <m_fileNames.size(); ++i)
+           std::cout << m_fileSizes[i] << " Bytes\t" << m_fileNames[i] << std::endl;
+}
+ 
+//-------------------------- (12) Print information about folders: name, size, number of things they contain. --------------------------//
+void explorer::printFolderInfo(void)
+{
+       for(int i = 0;i < m_folderNames.size(); ++i)
+           std::cout << m_folderNames[i] << "\n" << "# of elements: " << m_numberOfThingsInAFolder[i] << "\n" << "size: " << m_folderSizes[i] << " Bytes" << std::endl;
 }
