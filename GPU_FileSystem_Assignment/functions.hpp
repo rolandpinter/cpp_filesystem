@@ -1,15 +1,13 @@
 #ifndef functions_hpp
 #define functions_hpp
 
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <string>
-#include <map>
-#include <sstream>
+#include <stdio.h>    // for basic IO operations
+#include <iostream>   // IO stream
+#include <vector>     // for std::vector iterable container
+#include <fstream>    // needed for filesystem
+#include <string>     // for strings, of course
+#include <numeric>    // for std::accumulate
 #include <algorithm>
-#include <numeric>   //for std::accumulate
 namespace fs = std::__fs::filesystem;
 
 int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsigned long sizeToFind);
@@ -37,25 +35,25 @@ public:
     {
         m_givenPath = givenPath;
         
-        // Need to add manually givenPath to folderNames
-        // because recursive iteration will start FROM that folder
-        // and not WITH that folder.
+        /// Need to add manually givenPath to folderNames,
+        /// because recursive iteration will start FROM that folder,
+        /// and not WITH that folder.
         m_folderNames.push_back(fs::path(givenPath));
         m_folderSizes.push_back(0);
         m_numberOfThingsInAFolder.push_back(0);
     };
     
-    // Class member functions
-    void setPath(std::string givenPath); //Manually set the path of the class which should be examined.
-    void iterateThroughGivenPath(void); //Iterate the path and collect information.
-    void biggestFiles(const int n); //Determine the path of the n biggest files.
-    void biggestFolders(const int n); // Determine the path of the n biggest folders.
-    void avgFileSize(void); //Determine the average file size.
-    void avgFolderSize(void); //Determine the average folder size.
-    void medianFileSize(void); //Determine median file size.
-    void medianFolderSize(void); //Determine median folder size.
-    void distributionFileSizes(void); //Determine the distribution of file sizes.
-    void distributionFolderSizes(void); //Determine the distribution of folder sizes.
+    /// Class member functions
+    void setPath(std::string givenPath); // Manually set the path of the class which should be examined.
+    void iterateThroughGivenPath(void);  // Iterate the path and collect information.
+    void biggestFiles(const int n);      // Determine the path of the n biggest files.
+    void biggestFolders(const int n);    // Determine the path of the n biggest folders.
+    void avgFileSize(void);              // Determine the average file size.
+    void avgFolderSize(void);            // Determine the average folder size.
+    void medianFileSize(void);           // Determine median file size.
+    void medianFolderSize(void);         // Determine median folder size.
+    void distributionFileSizes(void);    // Determine the distribution of file sizes.
+    void distributionFolderSizes(void);  // Determine the distribution of folder sizes.
     
 //-------------------------- Functions just for development phase, sanity checks. --------------------------//
     void printFileInfo(void)

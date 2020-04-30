@@ -34,7 +34,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
     {
         for(auto& p: fs::recursive_directory_iterator(m_givenPath))
         {
-            // if directory
+            /// if directory
             if(fs::is_directory(p.symlink_status()))
             {
                 m_folderNames.push_back(p.path()); // save folder names
@@ -42,24 +42,24 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
                 m_numberOfThingsInAFolder.push_back(0);
             }
             
-            // if not directory
+            /// if not directory
             else
             {
                 m_fileNames.push_back(p.path());                // save file names
                 unsigned long sizeOfFile = fs::file_size(p.path());
                 m_fileSizes.push_back(sizeOfFile); // save file sizes
                 
-                // if it's a file, it's parent_path() will be the directory within it's contained
+                /// if it's a file, it's parent_path() will be the directory within it's contained
                 fs::path dirNameOfFile = p.path().parent_path();  // directory name of file
                 
-                // locate the directory's index in m_folderNames := indexOfFolder
+                /// locate the directory's index in m_folderNames := indexOfFolder
                 unsigned int indexOfFolder = 0;
                 std::vector<fs::path>::iterator itr;
                 for(itr = m_folderNames.begin(); itr != m_folderNames.end(); ++itr)
                 {
                     if(*itr == dirNameOfFile)
                     {
-                        // we found the directory, can stop iteration
+                        /// we found the directory, can stop iteration
                         break;
                     }
                     else
@@ -77,7 +77,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
 //-------------------------- (3) Determine the path of the n biggest files. --------------------------//
     void explorer::biggestFiles(const int n)
     {
-        // handling bad use-case
+        /// handling bad use-case
         if (n < 1)
         {
             std::cerr << "You have asked for the path of the " << n << " biggest files. A bit silly, ehh? Try again please, exiting..." <<std::endl;
@@ -91,7 +91,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
             exit(-1);
         }
         
-        // done handling bad use-cases, let's solve the problem now
+        /// done handling bad use-cases, let's solve the problem now
         std::vector<std::pair<unsigned long, fs::path> > pairFilesWithSizes; // make a vector of pairs, to make sort easy
         
         // fill the vector of pairs
@@ -112,7 +112,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
 //-------------------------- (4) Determine the path of the n biggest folders. --------------------------//
     void explorer::biggestFolders(const int n)
     {
-        // handling bad use-case
+        /// handling bad use-case
         if (n < 1)
         {
             std::cerr << "You have asked for the path of the " << n << " biggest folders. A bit silly, ehh? Try again please, exiting..." <<std::endl;
@@ -126,7 +126,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
             exit(-1);
         }
         
-        // done handling bad use-cases, let's solve the problem now
+        /// done handling bad use-cases, let's solve the problem now
         std::vector<std::pair<unsigned long, fs::path> > pairFoldersWithSizes; // make a vector of pairs, to make sort easy
         
         // fill the vector of pairs
@@ -167,6 +167,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
     {
         std::vector<unsigned long> fileSizesCopy = m_fileSizes; // copy by value, created a new vector! (to avoid messing with original vector)
         
+        /// test with the following 2 lines, seems to work!
         //std::vector<unsigned long> testingVec{1,9,6};
         //std::vector<unsigned long> fileSizesCopy = testinVec; // copy by value, created a new vector! (to avoid messing with original vector)
         
@@ -225,7 +226,7 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
         }
         
         
-        std::cout<<"File sizes [Bytes]   Counts      Histogram"<<std::endl; //22. char is C in Counts, 34. char is H in Histogram
+        std::cout<<"File sizes [Bytes]   Counts      Histogram"<<std::endl; // 22. char is C in Counts, 34. char is H in Histogram
         
         int positionOfC = 22;
         int positionOfH = 34;
@@ -234,14 +235,14 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
         {
             std::cout << uniqueFileSizes[i];
             
-            //string magic to have the number perfectly aligned under Counts!
+            /// string magic to have the number perfectly aligned under Counts!
             std::string foo = std::to_string(uniqueFileSizes[i]);
             unsigned long lengthOfNumber = foo.size();
             for(int j = 0; j < positionOfC - lengthOfNumber - 1; ++j) std::cout<<" ";
             
             std::cout <<countUniqueFileSizes[i];
             
-            //string magic to have the histogram *s perfectly aligned under Histogram!
+            /// string magic to have the histogram marking * symbols perfectly aligned under Histogram!
             std::string fooo = std::to_string(countUniqueFileSizes[i]);
             unsigned long lenghtOfCountsOfNumber = fooo.size();
             for(int k = 0; k <positionOfH - positionOfC - lenghtOfCountsOfNumber;++k) std::cout<<" ";
@@ -271,7 +272,7 @@ void explorer::distributionFolderSizes(void)
             countUniqueFolderSizes[index] += 1;
     }
     
-    std::cout<<"Folder sizes [Bytes]   Counts      Histogram"<<std::endl; //24. char is C in Counts, 36. char is H in Histogram
+    std::cout<<"Folder sizes [Bytes]   Counts      Histogram"<<std::endl; // 24. char is C in Counts, 36. char is H in Histogram
     
     int positionOfC = 24;
     int positionOfH = 36;
@@ -280,14 +281,14 @@ void explorer::distributionFolderSizes(void)
     {
         std::cout << uniqueFolderSizes[i];
         
-        //string magic to have the number perfectly aligned under Counts!
+        /// string magic to have the number perfectly aligned under Counts!
         std::string foo = std::to_string(uniqueFolderSizes[i]);
         unsigned long lengthOfNumber = foo.size();
         for(int j = 0; j < positionOfC - lengthOfNumber - 1; ++j) std::cout<<" ";
         
         std::cout <<countUniqueFolderSizes[i];
         
-        //string magic to have the histogram *s perfectly aligned under Histogram!
+        /// string magic to have the histogram marking * symbols perfectly aligned under Histogram!
         std::string fooo = std::to_string(countUniqueFolderSizes[i]);
         unsigned long lenghtOfCountsOfNumber = fooo.size();
         for(int k = 0; k <positionOfH - positionOfC - lenghtOfCountsOfNumber;++k) std::cout<<" ";
