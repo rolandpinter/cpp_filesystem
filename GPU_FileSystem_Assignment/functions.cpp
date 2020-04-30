@@ -20,6 +20,54 @@ int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsig
     else return -999;
 }
 
+std::string askForPathToExplore()
+{
+    std::string pathToExplore;
+    std::cout << "Give me a folder's path to explore or write TEST to use a pre-defined default test path: ";
+    std::cin >> pathToExplore;
+    
+    if(pathToExplore=="TEST") pathToExplore = "/Users/Roli/Desktop/MSc/2.félév/gpu/beadando/GPU_FileSystem_Assignment/cpp_filesystem/test01";
+    
+    fs::path temp(pathToExplore);
+    if(!fs::exists(temp))
+    {
+        std::cerr<<"Path does not exists, exiting..."<<std::endl;
+        exit(-1);
+    }
+    
+    return pathToExplore;
+}
+
+int askForCommand()
+{
+    int command;
+    std::cout << "\nWhat would you like to do? Please type in a number from the list:" << std::endl;
+    std::cout << "0: Exit this program and say goodbye." << std::endl;
+    std::cout << "1: Determine the path of the n biggest files." << std::endl;
+    std::cout << "2: Determine the path of the n biggest folders." << std::endl;
+    std::cout << "3: Determine the average file size." << std::endl;
+    std::cout << "4: Determine the average folder size." << std::endl;
+    std::cout << "5: Determine the median file size." << std::endl;
+    std::cout << "6: Determine the median folder size." << std::endl;
+    std::cout << "7: Determine the distribution of file sizes." << std::endl;
+    std::cout << "8: Determine the distribution of folder sizes." << std::endl;
+    std::cin >> command;
+    
+    if(command < 0 || command > 8)
+    {
+        std::cerr << "You've given a wrong number, exiting..." << std::endl;
+        exit(-1);
+    }
+    
+    if(command == 0)
+    {
+        std::cout << "You've requested to exit, so take care, cheers!" << std::endl;
+        exit(-1);
+    }
+    
+    return command;
+}
+
 //-------------------------- (1) Manually set the path of the class which should be examined. --------------------------//
     void explorer::setPath(std::string givenPath)
     {

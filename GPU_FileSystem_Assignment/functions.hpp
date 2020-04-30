@@ -11,6 +11,8 @@
 namespace fs = std::__fs::filesystem;
 
 int findIndexOfElementInVector(std::vector<unsigned long> uniqueFileSizes, unsigned long sizeToFind);
+std::string askForPathToExplore();
+int askForCommand();
 
 class explorer
 {
